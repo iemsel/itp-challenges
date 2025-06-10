@@ -1,21 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Index</title>
-    <link rel="stylesheet" href="./css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HTTP Cat Gallery</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
+<body class="bg-[#7f927b] text-gray-800">
 
-<body>
-    <div class="flex items-center justify-center min-h-screen">
-      <article class="bg-white p-8 rounded shadow-md max-w-lg w-full">
-        <h1 class="text-2xl font-bold mb-4 text-center">Centered Article</h1>
-        <p class="text-gray-700 text-center">
-          <%= article.data.author %>
-        </p>
-      </article>
+  <%- include('./partials/nav.ejs') %>
+
+  <header class="text-center mt-6 mb-4">
+    <div class="max-w-5xl mx-auto px-4 border-b border-white pb-2">
+      <h1 class="text-2xl font-semibold">
+        Cat codes(^-x-^)
+      </h1>
     </div>
-</body>
+  </header>
 
+  <main class="max-w-5xl mx-auto px-4 pb-10">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <% codes.forEach(code => { %>
+        <a href="/code/<%= code %>">
+          <div class="bg-white rounded-2xl shadow overflow-hidden hover:scale-[1.02] transition">
+            <img src="https://http.cat/<%= code %>" alt="HTTP <%= code %>" class="w-full h-64 object-cover"/>
+            <div class="bg-black text-white text-center py-2 text-sm font-mono">
+              Code: <%= code %>
+            </div>
+          </div>
+        </a>
+      <% }) %>
+    </div>
+  </main>
+
+</body>
 </html>
