@@ -1,25 +1,30 @@
 import { Request, Response } from 'express';
-import { ArticleResponse } from '../utils/interfaces.js';
-import * as Dotenv from 'dotenv';
-Dotenv.config({ path: '.env' });
-import { getData } from '../utils/ajax.js';
 import { statusDescriptions } from '../utils/statusDescriptions.js';
+import { fetchCatImages } from '../utils/ajax.js';
 
-const apiUrl: string = process.env.API_URL;
-
-export function getIndex(req: Request, res: Response) {
-  // Extract all status codes (keys) from statusDescriptions, convert to number and sort
+export async function getIndex(req: Request, res: Response) {
   const codes = Object.keys(statusDescriptions)
-    .map(code => Number(code))
+    .map(Number)
     .sort((a, b) => a - b);
 
-  res.render('index', { codes, category: 'all' });
+  const catImages = await fetchCatImages(codes);
+
+  res.render('index', {
+    codes: catImages.filter((img) => img.available),
+    category: 'all',
+  });
 }
 
-
-export function getCodeDetail(req: Request, res: Response) {
+export async function getCodeDetail(req: Request, res: Response) {
   const { code } = req.params;
   const description = statusDescriptions[code] || "No description available.";
   const category = `${code.charAt(0)}xx`;
-  res.render('detail', { code, description, category });
+
+  const [catImage] = await fetchCatImages([Number(code)]);
+
+  res.render('details', {
+    code: catImage,
+    description,
+    category,
+  });
 }

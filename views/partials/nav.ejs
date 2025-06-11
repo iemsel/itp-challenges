@@ -1,27 +1,23 @@
-<nav class="flex justify-between items-center p-4 bg-white shadow-md relative">
-  <!-- Active link only on mobile -->
+<nav class="flex justify-between items-center p-4 bg-white shadow-md relative" role="navigation" aria-label="Primary Navigation">
+  <!-- Mobile-only active category -->
   <div class="md:hidden font-medium text-lg">
-    <% if (category === 'all') { %>
-      <span class="underline font-bold">All codes</span>
-    <% } else { %>
-      <span class="underline font-bold"><%= category %> codes</span>
-    <% } %>
+    <p class="underline font-bold"><%= category === 'all' ? 'All codes' : `${category} codes` %></p>
   </div>
 
-  <!-- Full nav menu: hidden on mobile, toggled with JS -->
+  <!-- Full nav: toggled on mobile -->
   <div id="fullNav" class="hidden absolute top-full left-0 right-0 bg-white flex-col gap-4 font-medium text-lg p-4 md:static md:flex md:flex-row md:items-center md:gap-4 md:p-0">
-    <a href="/" class="<%= category === 'all' ? 'underline font-bold' : '' %>">All codes</a>
-    <a href="/categories?group=1xx" class="<%= category === '1xx' ? 'underline font-bold' : '' %>">1xx codes</a>
-    <a href="/categories?group=2xx" class="<%= category === '2xx' ? 'underline font-bold' : '' %>">2xx codes</a>
-    <a href="/categories?group=3xx" class="<%= category === '3xx' ? 'underline font-bold' : '' %>">3xx codes</a>
-    <a href="/categories?group=4xx" class="<%= category === '4xx' ? 'underline font-bold' : '' %>">4xx codes</a>
-    <a href="/categories?group=5xx" class="<%= category === '5xx' ? 'underline font-bold' : '' %>">5xx codes</a>
+    <a href="/" class="<%= category === 'all' ? 'underline font-bold' : '' %>" <%= category === 'all' ? 'aria-current="page"' : '' %>>All codes</a>
+    <a href="/categories?group=1xx" class="<%= category === '1xx' ? 'underline font-bold' : '' %>" <%= category === '1xx' ? 'aria-current="page"' : '' %>>1xx codes</a>
+    <a href="/categories?group=2xx" class="<%= category === '2xx' ? 'underline font-bold' : '' %>" <%= category === '2xx' ? 'aria-current="page"' : '' %>>2xx codes</a>
+    <a href="/categories?group=3xx" class="<%= category === '3xx' ? 'underline font-bold' : '' %>" <%= category === '3xx' ? 'aria-current="page"' : '' %>>3xx codes</a>
+    <a href="/categories?group=4xx" class="<%= category === '4xx' ? 'underline font-bold' : '' %>" <%= category === '4xx' ? 'aria-current="page"' : '' %>>4xx codes</a>
+    <a href="/categories?group=5xx" class="<%= category === '5xx' ? 'underline font-bold' : '' %>" <%= category === '5xx' ? 'aria-current="page"' : '' %>>5xx codes</a>
   </div>
 
-  <!-- Hamburger menu button -->
+  <!-- Hamburger -->
   <div class="md:hidden">
-    <button id="menuToggle" aria-label="Toggle menu">
-      <svg class="w-6 h-6" fill="none" stroke="black" stroke-width="2" viewBox="0 0 24 24">
+    <button id="menuToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="fullNav" class="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+      <svg class="w-6 h-6" fill="none" stroke="black" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
       </svg>
     </button>
@@ -29,14 +25,15 @@
 </nav>
 
 <script>
-  // Simple toggle script
   document.addEventListener("DOMContentLoaded", () => {
     const toggleBtn = document.getElementById("menuToggle");
     const fullNav = document.getElementById("fullNav");
 
-    toggleBtn.addEventListener("click", () => {
-      fullNav.classList.toggle("hidden");
-      fullNav.classList.toggle("flex");
+    toggleBtn?.addEventListener("click", () => {
+      const isHidden = fullNav.classList.contains("hidden");
+      fullNav.classList.toggle("hidden", !isHidden);
+      fullNav.classList.toggle("flex", isHidden);
+      toggleBtn.setAttribute("aria-expanded", String(isHidden));
     });
   });
 </script>

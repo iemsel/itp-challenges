@@ -6,31 +6,37 @@
   <title>HTTP Cat Gallery</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[#7f927b] text-gray-800">
+<body class="bg-[#7f927b] text-gray-800 min-h-screen flex flex-col">
 
   <%- include('./partials/nav.ejs') %>
 
   <header class="text-center mt-6 mb-4">
     <div class="max-w-5xl mx-auto px-4 border-b border-white pb-2">
-      <h1 class="text-2xl font-semibold">
-        Cat codes(^-x-^)
+      <h1 class="text-3xl font-semibold font-mono">
+        Cat Codes (^-x-^)
       </h1>
     </div>
   </header>
 
-  <main class="max-w-5xl mx-auto px-4 pb-10">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      <% codes.forEach(code => { %>
-        <a href="/code/<%= code %>">
-          <div class="bg-white rounded-2xl shadow overflow-hidden hover:scale-[1.02] transition">
-            <img src="https://http.cat/<%= code %>" alt="HTTP <%= code %>" class="w-full h-64 object-cover"/>
-            <div class="bg-black text-white text-center py-2 text-sm font-mono">
-              Code: <%= code %>
-            </div>
-          </div>
-        </a>
-      <% }) %>
-    </div>
+  <main class="flex-grow max-w-5xl mx-auto px-4 pb-10">
+    <section aria-label="HTTP Cat Codes Gallery">
+      <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 list-none p-0 m-0">
+        <% codes.forEach(code => { %>
+          <li>
+            <a href="/code/<%= code.code %>" class="block group rounded overflow-hidden shadow hover:shadow-lg transition">
+              <img 
+                src="<%= code.imageUrl %>" 
+                alt="HTTP Cat image for status code <%= code.code %>" 
+                class="w-full h-64 object-cover"
+              />
+              <div class="bg-black text-white text-center py-2 text-sm font-mono group-hover:bg-gray-800 transition">
+                Code: <%= code.code %>
+              </div>
+            </a>
+          </li>
+        <% }) %>
+      </ul>
+    </section>
   </main>
 
 </body>

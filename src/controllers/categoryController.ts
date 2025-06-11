@@ -1,43 +1,32 @@
 import { Request, Response } from 'express';
-import { ArticleResponse } from '../utils/interfaces.js';
-import * as Dotenv from 'dotenv';
-Dotenv.config({ path: '.env' });
-import { getDataFromAuthenticatedApi } from '../utils/ajax.js';
 import { statusDescriptions } from '../utils/statusDescriptions.js';
-
+import { CatImage, fetchCatImages } from '../utils/ajax.js';
 
 /**
- * All routes to the external Api are authenticated
- * using the Bearer token stored in the .env file.
- * In order to use the token safely do not
- * expose it in the client-side code.
+ *
  */
+export async function getCategoryCodes(req: Request, res: Response): Promise<void | Response> {
+  try {
+    const group: string = req.query.group as string;
 
-const apiUrl: string = process.env.API_URL;
+    if (!group || !/^[1-5]xx$/.test(group)) {
+      return res.status(400).send('Invalid category group.');
+    }
 
+    const codes: number[] = Object.keys(statusDescriptions)
+      .map(Number)
+      .filter((code: number) => code.toString().startsWith(group[0]))
+      .sort((a: number, b: number) => a - b);
 
+    const catImages: CatImage[] = await fetchCatImages(codes);
 
-export function getCategoryCodes(req: Request, res: Response) {
-  const group = req.query.group;
-
-  // Narrow down type to string before using charAt
-  let prefix: string | null = null;
-
-  if (typeof group === 'string') {
-    prefix = group.charAt(0);
+    return res.render('index', {
+      codes: catImages.filter((img: CatImage) => img.available),
+      category: group,
+    });
+  } catch (error) {
+    console.error('Error in getCategoryCodes:', error);
+    return res.status(500).send('Internal Server Error');
   }
-
-  // Get all codes from statusDescriptions, convert to number and sort
-  const allCodes = Object.keys(statusDescriptions)
-    .map(code => Number(code))
-    .sort((a, b) => a - b);
-
-  let filteredCodes = allCodes;
-
-  if (prefix) {
-    filteredCodes = allCodes.filter(code => code.toString().startsWith(prefix));
-  }
-
-  res.render('index', { codes: filteredCodes, category: group || 'all' });
 }
 
