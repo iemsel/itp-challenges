@@ -10,12 +10,10 @@
 
   <%- include('./partials/nav.ejs') %>
 
-  <header class="text-center mt-6 mb-4">
-    <div class="max-w-5xl mx-auto px-4 border-b border-white pb-2">
-      <h1 class="text-3xl font-semibold font-mono">
-        Cat Codes (^-x-^)
-      </h1>
-    </div>
+  <header class="text-center mt-6 mb-4 border-b border-white pb-2 max-w-5xl mx-auto px-4">
+    <h1 class="text-3xl font-semibold font-mono">
+      Cat Codes (^-x-^)
+    </h1>
   </header>
 
   <main class="flex-grow max-w-5xl mx-auto px-4 pb-10">
@@ -24,14 +22,16 @@
         <% codes.forEach(code => { %>
           <li>
             <a href="/code/<%= code.code %>" class="block group rounded overflow-hidden shadow hover:shadow-lg transition">
-              <img 
-                src="<%= code.imageUrl %>" 
-                alt="HTTP Cat image for status code <%= code.code %>" 
-                class="w-full h-64 object-cover"
-              />
-              <div class="bg-black text-white text-center py-2 text-sm font-mono group-hover:bg-gray-800 transition">
-                Code: <%= code.code %>
-              </div>
+              <figure>
+                <img
+                  src="<%= code.imageUrl %>"
+                  alt="HTTP Cat image for status code <%= code.code %>"
+                  class="w-full h-64 object-cover"
+                />
+                <figcaption class="bg-black text-white text-center py-2 text-sm font-mono group-hover:bg-gray-800 transition">
+                  Code: <%= code.code %>
+                </figcaption>
+              </figure>
             </a>
           </li>
         <% }) %>

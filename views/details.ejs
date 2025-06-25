@@ -11,10 +11,8 @@
 
   <%- include('partials/nav.ejs') %>
 
-  <header class="text-center mt-6 mb-4">
-    <div class="max-w-5xl mx-auto px-4 border-b border-white pb-2">
-      <h1 class="text-3xl font-bold">HTTP Cat Code: <%= code.code %></h1>
-    </div>
+  <header class="text-center mt-6 mb-4 border-b border-white pb-2 max-w-5xl mx-auto px-4">
+    <h1 class="text-3xl font-bold">HTTP Cat Code: <%= code.code %></h1>
   </header>
 
   <main class="flex-grow flex flex-col md:flex-row items-center justify-center gap-10 p-6 max-w-5xl mx-auto">
@@ -23,9 +21,9 @@
       <% if (code.imageUrl) { %>
         <img src="<%= code.imageUrl %>" alt="HTTP Cat <%= code.code %>" class="w-96 shadow" />
       <% } else { %>
-        <div class="w-96 h-60 flex items-center justify-center bg-gray-300 rounded-lg shadow">
-          <p class="text-lg font-semibold text-gray-600">Image not available</p>
-        </div>
+        <figure class="w-96 h-60 flex items-center justify-center bg-gray-300 rounded-lg shadow">
+          <figcaption class="text-lg font-semibold text-gray-600">Image not available</figcaption>
+        </figure>
       <% } %>
     </section>
 
